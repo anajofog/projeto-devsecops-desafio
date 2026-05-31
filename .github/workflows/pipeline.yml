@@ -32,6 +32,16 @@ jobs:
       # ❌ PASSO 3: IMPLEMENTE AQUI — Secrets Scanning com Gitleaks
       # Dica: use a action oficial "gitleaks/gitleaks-action@v2"
       - name: 🔑 Secrets Scanning
+      run: |
+        docker run --rm -v "${{ github.workspace }}:/repo" zricethezav/gitleaks:latest \
+        detect \
+        --source="/repo" \
+        --no-git \
+        --config="/repo/.gitleaks.toml" \
+        --report-format=sarif \
+        --report-path="/repo/gitleaks-report.sarif" \
+        --redact \
+        --verbose
         uses: gitleaks/gitleaks-action@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
